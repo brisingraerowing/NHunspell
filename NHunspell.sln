@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{50E331DB-7D25-440A-9086-86EBDE0F2D66}"
+	ProjectSection(SolutionItems) = preProject
+		NHunspell-Documentation.docx = NHunspell-Documentation.docx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{D1CCA085-3742-43CE-8EDD-A4581CFB53FE}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\NHunspell-Documentation.shfbproj = Documentation\NHunspell-Documentation.shfbproj
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hunspell", "Hunspell\Hunspell.vcxproj", "{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHunspell", "NHunspell\NHunspell.csproj", "{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29} = {D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|x64.ActiveCfg = Debug|x64
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|x64.Build.0 = Debug|x64
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|x86.ActiveCfg = Debug|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|x86.Build.0 = Debug|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|Any CPU.ActiveCfg = Release|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|x64.ActiveCfg = Release|x64
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|x64.Build.0 = Release|x64
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|x86.ActiveCfg = Release|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|x86.Build.0 = Release|Win32
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|x64.ActiveCfg = Debug|x64
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|x64.Build.0 = Debug|x64
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|x86.ActiveCfg = Debug|x86
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|x86.Build.0 = Debug|x86
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|x64.ActiveCfg = Release|x64
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|x64.Build.0 = Release|x64
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|x86.ActiveCfg = Release|x86
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		AMDCaProjectFile = D:\CheckOutLibraries\NHunspell\CodeAnalyst\NHunspell.caw
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal
