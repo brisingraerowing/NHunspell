@@ -469,6 +469,30 @@ namespace NHunspell
             return result;
         }
 
+		public List<string> Suggest(string word, int maxCount)
+		{
+			if (this.unmanagedHandle == IntPtr.Zero)
+			{
+				throw new InvalidOperationException("Dictionary is not loaded");
+			}
+
+			var result = new List<string>();
+
+			IntPtr strings = MarshalHunspellDll.HunspellSuggest(this.unmanagedHandle, word);
+
+			int stringCount = 0;
+			IntPtr currentString = Marshal.ReadIntPtr(strings, stringCount * IntPtr.Size);
+
+			while (currentString != IntPtr.Zero && stringCount < maxCount)
+			{
+				++stringCount;
+				result.Add(Marshal.PtrToStringUni(currentString));
+				currentString = Marshal.ReadIntPtr(strings, stringCount * IntPtr.Size);
+			}
+
+			return result;
+		}
+
         #endregion
 
         #region Implemented Interfaces
