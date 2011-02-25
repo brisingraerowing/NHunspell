@@ -74,7 +74,7 @@ namespace NHunspell
         {
             this.processors = config.Processors;
 
-            if (config.HunspellAffFile != null && config.HunspellAffFile != string.Empty)
+            if (!String.IsNullOrEmpty(config.HunspellAffFile))
             {
                 this.hunspells = new Stack<Hunspell>(this.processors);
                 for (int count = 0; count < this.processors; ++count)
@@ -91,7 +91,7 @@ namespace NHunspell
                 }
             }
 
-            if (config.HyphenDictFile != null && config.HyphenDictFile != string.Empty)
+            if (!String.IsNullOrEmpty(config.HyphenDictFile))
             {
                 this.hyphens = new Stack<Hyphen>(this.processors);
                 for (int count = 0; count < this.processors; ++count)
@@ -100,12 +100,12 @@ namespace NHunspell
                 }
             }
 
-            if (config.MyThesIdxFile != null && config.MyThesIdxFile != string.Empty)
+            if (!String.IsNullOrEmpty(config.MyThesDatFile))
             {
                 this.myTheses = new Stack<MyThes>(this.processors);
                 for (int count = 0; count < this.processors; ++count)
                 {
-                    this.myTheses.Push(new MyThes(config.MyThesIdxFile, config.MyThesDatFile));
+					this.myTheses.Push(new MyThes(config.MyThesDatFile));
                 }
             }
 

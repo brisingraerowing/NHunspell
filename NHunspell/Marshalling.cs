@@ -441,7 +441,6 @@ namespace NHunspell
                     default:
                         throw new NotSupportedException(
                             Resources.HunspellNotAvailabeForProcessorArchitectureMessage + info.wProcessorArchitecture);
-                        break;
                 }
 
                 HunspellInit = (HunspellInitDelegate)GetDelegate("HunspellInit", typeof(HunspellInitDelegate));
@@ -467,7 +466,7 @@ namespace NHunspell
                 HyphenHyphenate =
                     (HyphenHyphenateDelegate)GetDelegate("HyphenHyphenate", typeof(HyphenHyphenateDelegate));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (dllHandle != IntPtr.Zero)
                 {
