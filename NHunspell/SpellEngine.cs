@@ -3,8 +3,7 @@
 //   (c) by Maierhofer Software an the Hunspell Developers
 // </copyright>
 // <summary>
-//   Holds  objects for different languages.
-//   Allows thread save spell checking
+//   Holds <see cref="SpellFactory" /> objects for different languages. Allows thread save spell checking
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,25 +13,24 @@ namespace NHunspell
     using System.Collections.Generic;
 
     /// <summary>
-    /// Holds <see cref="SpellFactory"/> objects for different languages. 
-    /// Allows thread save spell checking
+    ///   Holds <see cref="SpellFactory" /> objects for different languages. Allows thread save spell checking
     /// </summary>
     public class SpellEngine : IDisposable
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
-        /// The dictionary lock.
+        ///   The dictionary lock.
         /// </summary>
         private readonly object dictionaryLock;
 
         /// <summary>
-        /// The languages.
+        ///   The languages.
         /// </summary>
         private Dictionary<string, SpellFactory> languages;
 
         /// <summary>
-        /// The processors.
+        ///   The processors.
         /// </summary>
         private int processors;
 
@@ -41,7 +39,7 @@ namespace NHunspell
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpellEngine"/> class.
+        ///   Initializes a new instance of the <see cref="SpellEngine" /> class.
         /// </summary>
         public SpellEngine()
         {
@@ -52,14 +50,12 @@ namespace NHunspell
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         /// <summary>
-        /// Gets a value indicating whether this instance is disposed.
+        ///   Gets a value indicating whether this instance is disposed.
         /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance is disposed; otherwise, <c>false</c>.
-        /// </value>
+        /// <value> <c>true</c> if this instance is disposed; otherwise, <c>false</c> . </value>
         public bool IsDisposed
         {
             get
@@ -69,9 +65,9 @@ namespace NHunspell
         }
 
         /// <summary>
-        /// Gets or sets the used processors (cores).
+        ///   Gets or sets the used processors (cores).
         /// </summary>
-        /// <value>The processors (cores).</value>
+        /// <value> The processors (cores). </value>
         public int Processors
         {
             get
@@ -92,12 +88,20 @@ namespace NHunspell
 
         #endregion
 
-        #region Indexers
+        #region Public Indexers
 
         /// <summary>
         /// Gets the <see cref="NHunspell.SpellFactory"/> with the specified language.
         /// </summary>
-        /// <value>the language</value>
+        /// <param name="language">
+        /// The language.
+        /// </param>
+        /// <value>
+        /// the language 
+        /// </value>
+        /// <returns>
+        /// The <see cref="SpellFactory"/>.
+        /// </returns>
         public SpellFactory this[string language]
         {
             get
@@ -108,13 +112,13 @@ namespace NHunspell
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
 
         /// <summary>
         /// Adds the language.
         /// </summary>
         /// <param name="config">
-        /// The language configuration.
+        /// The language configuration. 
         /// </param>
         public void AddLanguage(LanguageConfig config)
         {
@@ -130,14 +134,8 @@ namespace NHunspell
             lock (this.dictionaryLock) this.languages.Add(languageCode, factory);
         }
 
-        #endregion
-
-        #region Implemented Interfaces
-
-        #region IDisposable
-
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///   Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -145,7 +143,7 @@ namespace NHunspell
             {
                 lock (this.dictionaryLock)
                 {
-                    foreach (SpellFactory factory in this.languages.Values)
+                    foreach (var factory in this.languages.Values)
                     {
                         factory.Dispose();
                     }
@@ -154,8 +152,6 @@ namespace NHunspell
                 }
             }
         }
-
-        #endregion
 
         #endregion
     }

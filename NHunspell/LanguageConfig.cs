@@ -13,55 +13,55 @@ namespace NHunspell
     using System.IO;
 
     /// <summary>
-    /// provides configuration data for a specific language like the open office dictionaries.
+    ///   provides configuration data for a specific language like the open office dictionaries.
     /// </summary>
     public class LanguageConfig
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
-        /// The hunspell aff file.
+        ///   The hunspell aff file.
         /// </summary>
         private string hunspellAffFile;
 
         /// <summary>
-        /// The hunspell dict file.
+        ///   The hunspell dict file.
         /// </summary>
         private string hunspellDictFile;
 
         /// <summary>
-        /// The hyphen dict file.
+        ///   The hyphen dict file.
         /// </summary>
         private string hyphenDictFile;
 
         /// <summary>
-        /// The language code.
+        ///   The language code.
         /// </summary>
         private string languageCode;
 
         /// <summary>
-        /// The my thes dat file.
+        ///   The my thes dat file.
         /// </summary>
         private string myThesDatFile;
 
         /// <summary>
-        /// The my thes idx file.
+        ///   The my thes idx file.
         /// </summary>
         private string myThesIdxFile;
 
         /// <summary>
-        /// The processors.
+        ///   The processors.
         /// </summary>
         private int processors;
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         /// <summary>
-        /// Gets or sets the hunspell affix file.
+        ///   Gets or sets the hunspell affix file.
         /// </summary>
-        /// <value>The hunspell aff file.</value>
+        /// <value> The hunspell aff file. </value>
         public string HunspellAffFile
         {
             get
@@ -82,9 +82,9 @@ namespace NHunspell
         }
 
         /// <summary>
-        /// Gets or sets the hunspell dictionary file.
+        ///   Gets or sets the hunspell dictionary file.
         /// </summary>
-        /// <value>The hunspell dict file.</value>
+        /// <value> The hunspell dict file. </value>
         public string HunspellDictFile
         {
             get
@@ -105,15 +105,15 @@ namespace NHunspell
         }
 
         /// <summary>
-        /// Gets or sets the key for encrypted dictionaries.
+        ///   Gets or sets the key for encrypted dictionaries.
         /// </summary>
-        /// <value>The hunspell key.</value>
+        /// <value> The hunspell key. </value>
         public string HunspellKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the hyphen dictionary file.
+        ///   Gets or sets the hyphen dictionary file.
         /// </summary>
-        /// <value>The hyphen dict file.</value>
+        /// <value> The hyphen dict file. </value>
         public string HyphenDictFile
         {
             get
@@ -134,9 +134,9 @@ namespace NHunspell
         }
 
         /// <summary>
-        /// Gets or sets the language code.
+        ///   Gets or sets the language code.
         /// </summary>
-        /// <value>The language code.</value>
+        /// <value> The language code. </value>
         public string LanguageCode
         {
             get
@@ -161,9 +161,9 @@ namespace NHunspell
         }
 
         /// <summary>
-        /// Gets or sets MYThes data file.
+        ///   Gets or sets MYThes data file.
         /// </summary>
-        /// <value>My thes dat file.</value>
+        /// <value> My thes dat file. </value>
         public string MyThesDatFile
         {
             get
@@ -184,9 +184,9 @@ namespace NHunspell
         }
 
         /// <summary>
-        /// Gets or sets the MyThes index file.
+        ///   Gets or sets the MyThes index file.
         /// </summary>
-        /// <value>My thes idx file.</value>
+        /// <value> My thes idx file. </value>
         public string MyThesIdxFile
         {
             get
@@ -207,9 +207,9 @@ namespace NHunspell
         }
 
         /// <summary>
-        /// Gets or sets the processors (cores) used by the <see cref="SpellFactory"/>.
+        ///   Gets or sets the processors (cores) used by the <see cref="SpellFactory" /> .
         /// </summary>
-        /// <value>The processors.</value>
+        /// <value> The processors. </value>
         public int Processors
         {
             get

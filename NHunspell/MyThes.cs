@@ -15,19 +15,19 @@ namespace NHunspell
     using System.Text;
 
     /// <summary>
-    /// provides thesaurus functions to get synonyms for a word
+    ///   provides thesaurus functions to get synonyms for a word
     /// </summary>
     public class MyThes
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
-        /// The dictionary lock.
+        ///   The dictionary lock.
         /// </summary>
         private readonly object dictionaryLock = new object();
 
         /// <summary>
-        /// The synonyms.
+        ///   The synonyms.
         /// </summary>
         private readonly Dictionary<string, ThesMeaning[]> synonyms = new Dictionary<string, ThesMeaning[]>();
 
@@ -36,7 +36,7 @@ namespace NHunspell
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MyThes"/> class.
+        ///   Initializes a new instance of the <see cref="MyThes" /> class.
         /// </summary>
         public MyThes()
         {
@@ -46,7 +46,7 @@ namespace NHunspell
         /// Initializes a new instance of the <see cref="MyThes"/> class.
         /// </summary>
         /// <param name="datBytes">
-        /// The thesaurus dictionary bytes.
+        /// The thesaurus dictionary bytes. 
         /// </param>
         public MyThes(byte[] datBytes)
         {
@@ -57,7 +57,7 @@ namespace NHunspell
         /// Initializes a new instance of the <see cref="MyThes"/> class.
         /// </summary>
         /// <param name="datFile">
-        /// The path to the thesaurus dictionary file.
+        /// The path to the thesaurus dictionary file. 
         /// </param>
         public MyThes(string datFile)
         {
@@ -68,10 +68,10 @@ namespace NHunspell
         /// Initializes a new instance of the <see cref="MyThes"/> class.
         /// </summary>
         /// <param name="idxFile">
-        /// The thesuarus idx file.
+        /// The thesuarus idx file. 
         /// </param>
         /// <param name="datFile">
-        /// The thesaurus dat file.
+        /// The thesaurus dat file. 
         /// </param>
         /// <remarks>
         /// This function is obsolete, idx File is not longer needed, <see cref="MyThes"/> works now completely in memory
@@ -84,15 +84,16 @@ namespace NHunspell
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
 
         /// <summary>
         /// Gets the .NET encoding for the specified dictionary encoding.
         /// </summary>
         /// <param name="encoding">
-        /// The encoding.
+        /// The encoding. 
         /// </param>
         /// <returns>
+        /// The <see cref="Encoding"/>.
         /// </returns>
         /// <exception cref="NotSupportedException">
         /// </exception>
@@ -202,7 +203,7 @@ namespace NHunspell
         /// Loads the thesaurus from a in memory dictionary.
         /// </summary>
         /// <param name="dictionaryBytes">
-        /// The dictionary Bytes.
+        /// The dictionary Bytes. 
         /// </param>
         public void Load(byte[] dictionaryBytes)
         {
@@ -291,7 +292,7 @@ namespace NHunspell
         /// Loads the thesaurus from the specified dictionary file.
         /// </summary>
         /// <param name="dictionaryFile">
-        /// The dictionary file.
+        /// The dictionary file. 
         /// </param>
         public void Load(string dictionaryFile)
         {
@@ -317,10 +318,10 @@ namespace NHunspell
         /// Lookups synonyms for the specified word.
         /// </summary>
         /// <param name="word">
-        /// The word to lookup
+        /// The word to lookup 
         /// </param>
         /// <returns>
-        /// list of synonyms
+        /// list of synonyms 
         /// </returns>
         public ThesResult Lookup(string word)
         {
@@ -347,12 +348,13 @@ namespace NHunspell
         /// Lookups the specified word with word stemming and generation
         /// </summary>
         /// <param name="word">
-        /// The word.
+        /// The word. 
         /// </param>
         /// <param name="stemming">
-        /// The <see cref="Hunspell"/> object for stemming and generation.
+        /// The <see cref="Hunspell"/> object for stemming and generation. 
         /// </param>
         /// <returns>
+        /// The <see cref="ThesResult"/>.
         /// </returns>
         public ThesResult Lookup(string word, Hunspell stemming)
         {
@@ -374,19 +376,19 @@ namespace NHunspell
             }
 
             var meanings = new List<ThesMeaning>();
-            foreach (string stem in stems)
+            foreach (var stem in stems)
             {
                 ThesResult stemSynonyms = this.Lookup(stem);
 
                 if (stemSynonyms != null)
                 {
-                    foreach (ThesMeaning meaning in stemSynonyms.Meanings)
+                    foreach (var meaning in stemSynonyms.Meanings)
                     {
                         var currentSynonyms = new List<string>();
-                        foreach (string synonym in meaning.Synonyms)
+                        foreach (var synonym in meaning.Synonyms)
                         {
                             List<string> generatedSynonyms = stemming.Generate(synonym, word);
-                            foreach (string generatedSynonym in generatedSynonyms)
+                            foreach (var generatedSynonym in generatedSynonyms)
                             {
                                 currentSynonyms.Add(generatedSynonym);
                             }
@@ -416,13 +418,13 @@ namespace NHunspell
         /// The get cr lf length.
         /// </summary>
         /// <param name="buffer">
-        /// The buffer.
+        /// The buffer. 
         /// </param>
         /// <param name="pos">
-        /// The pos.
+        /// The pos. 
         /// </param>
         /// <returns>
-        /// The get cr lf length.
+        /// The get cr lf length. 
         /// </returns>
         /// <exception cref="ArgumentException">
         /// </exception>
@@ -455,13 +457,13 @@ namespace NHunspell
         /// Gets the length of the line.
         /// </summary>
         /// <param name="buffer">
-        /// The buffer.
+        /// The buffer. 
         /// </param>
         /// <param name="start">
-        /// The start.
+        /// The start. 
         /// </param>
         /// <returns>
-        /// The get line length.
+        /// The get line length. 
         /// </returns>
         private int GetLineLength(byte[] buffer, int start)
         {

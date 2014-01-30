@@ -3,7 +3,7 @@
 //   (c) by Maierhofer Software an the Hunspell Developers
 // </copyright>
 // <summary>
-/// Spell checking, morphological analysis and generation functions.
+//   Spell checking, morphological analysis and generation functions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,14 +15,19 @@ namespace NHunspell
 	using System.Runtime.InteropServices;
 
 	/// <summary>
-	/// Spell checking, morphological analysis and generation functions.
+	///   Spell checking, morphological analysis and generation functions.
 	/// </summary>
 	public class Hunspell : IDisposable
 	{
-		#region Constants and Fields
+		#region Fields
 
 		/// <summary>
-		/// The unmanaged handle of the native Hunspell object
+		/// The native dll is referenced.
+		/// </summary>
+		private bool nativeDllIsReferenced;
+
+		/// <summary>
+		///   The unmanaged handle of the native Hunspell object
 		/// </summary>
 		private IntPtr unmanagedHandle;
 
@@ -31,7 +36,7 @@ namespace NHunspell
 		#region Constructors and Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Hunspell"/> class.
+		///   Initializes a new instance of the <see cref="Hunspell" /> class.
 		/// </summary>
 		public Hunspell()
 		{
@@ -41,10 +46,10 @@ namespace NHunspell
 		/// Initializes a new instance of the <see cref="Hunspell"/> class.
 		/// </summary>
 		/// <param name="affFile">
-		/// The affix file.
+		/// The affix file. 
 		/// </param>
 		/// <param name="dictFile">
-		/// The dictionary file.
+		/// The dictionary file. 
 		/// </param>
 		public Hunspell(string affFile, string dictFile)
 		{
@@ -55,13 +60,13 @@ namespace NHunspell
 		/// Initializes a new instance of the <see cref="Hunspell"/> class.
 		/// </summary>
 		/// <param name="affFile">
-		/// The affix file.
+		/// The affix file. 
 		/// </param>
 		/// <param name="dictFile">
-		/// The dictionary file.
+		/// The dictionary file. 
 		/// </param>
 		/// <param name="key">
-		/// The key for encrypted dictionaries.
+		/// The key for encrypted dictionaries. 
 		/// </param>
 		public Hunspell(string affFile, string dictFile, string key)
 		{
@@ -72,16 +77,16 @@ namespace NHunspell
 		/// Initializes a new instance of the <see cref="Hunspell"/> class.
 		/// </summary>
 		/// <param name="affixFileData">
-		/// The affix file data.
+		/// The affix file data. 
 		/// </param>
 		/// <param name="dictionaryFileData">
-		/// The dictionary file data.
+		/// The dictionary file data. 
 		/// </param>
 		/// <param name="key">
-		/// The key for encrypted dictionaries.
+		/// The key for encrypted dictionaries. 
 		/// </param>
 		/// <remarks>
-		/// Affix and dictionary data must be binary loaded Hunspell dictionaries. 
+		/// Affix and dictionary data must be binary loaded Hunspell dictionaries.
 		/// </remarks>
 		public Hunspell(byte[] affixFileData, byte[] dictionaryFileData, string key)
 		{
@@ -92,13 +97,13 @@ namespace NHunspell
 		/// Initializes a new instance of the <see cref="Hunspell"/> class.
 		/// </summary>
 		/// <param name="affixFileData">
-		/// The affix file data.
+		/// The affix file data. 
 		/// </param>
 		/// <param name="dictionaryFileData">
-		/// The dictionary file data.
+		/// The dictionary file data. 
 		/// </param>
 		/// <remarks>
-		/// Affix and dictionary data must be binary loaded Hunspell dictionaries. 
+		/// Affix and dictionary data must be binary loaded Hunspell dictionaries.
 		/// </remarks>
 		public Hunspell(byte[] affixFileData, byte[] dictionaryFileData)
 		{
@@ -111,20 +116,15 @@ namespace NHunspell
 		}
 		#endregion
 
-		#region Properties
+		#region Public Properties
 
 		/// <summary>
-		/// Gets or sets the path to the native Hunspell DLLs.
+		///   Gets or sets the path to the native Hunspell DLLs.
 		/// </summary>
-		/// <value>The Path (without file name)</value>
+		/// <value> The Path (without file name) </value>
 		/// <remarks>
-		/// <para>
-		/// This property can only be set before the first use of NHunspell. 
-		/// </para>
-		/// <para>
-		/// NHunspell uses specialized DLLs with platform specific names. 
-		/// Hunspellx86.dll is the 32Bit X86 version, Hunspellx64.dll is the 64Bit AMD64 version. 
-		/// </para>
+		///   <para>This property can only be set before the first use of NHunspell.</para> <para>NHunspell uses specialized DLLs with platform specific names. 
+		///                                                                                   Hunspellx86.dll is the 32Bit X86 version, Hunspellx64.dll is the 64Bit AMD64 version.</para>
 		/// </remarks>
 		public static string NativeDllPath
 		{
@@ -140,36 +140,25 @@ namespace NHunspell
 		}
 
 		/// <summary>
-		/// Gets a value indicating whether this instance is disposed.
+		/// Gets a value indicating whether is disposed.
 		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is disposed; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsDisposed
-		{
-			get
-			{
-				return this.unmanagedHandle == IntPtr.Zero;
-			}
-		}
+		public bool IsDisposed { get; private set; }
 
 		#endregion
 
-		#region Public Methods
+		#region Public Methods and Operators
 
 		/// <summary>
 		/// Adds the specified word to the internal dictionary.
 		/// </summary>
 		/// <param name="word">
-		/// The word to add.
+		/// The word to add. 
 		/// </param>
 		/// <returns>
-		/// <c>true</c> if the word was successfully added, otherwise <c>false</c>
+		/// <c>true</c> if the word was successfully added, otherwise <c>false</c> 
 		/// </returns>
 		/// <remarks>
-		/// The word is NOT added to the dictionary file or data or stored in some way.
-		/// It is only added to the internal data of the current <see cref="Hunspell"/> class.
-		/// You must store your user dictionary elsewhere and Add() all words every time you create a new <see cref="Hunspell"/> object. 
+		/// The word is NOT added to the dictionary file or data or stored in some way. It is only added to the internal data of the current <see cref="Hunspell"/> class. You must store your user dictionary elsewhere and Add() all words every time you create a new <see cref="Hunspell"/> object.
 		/// </remarks>
 		public bool Add(string word)
 		{
@@ -186,13 +175,13 @@ namespace NHunspell
 		/// Adds the specified word to the internal dictionary. Determines the affixes from the provided sample.
 		/// </summary>
 		/// <param name="word">
-		/// The word in stem form
+		/// The word in stem form 
 		/// </param>
 		/// <param name="example">
-		/// The example in stem form
+		/// The example in stem form 
 		/// </param>
 		/// <returns>
-		/// <c>true</c> if the word was successfully added, otherwise <c>false</c>
+		/// <c>true</c> if the word was successfully added, otherwise <c>false</c> 
 		/// </returns>
 		/// <remarks>
 		/// <para>
@@ -200,16 +189,16 @@ namespace NHunspell
 		/// </para>
 		/// <para>
 		/// The word is NOT added to the dictionary file or data or stored in some way.
-		/// It is only added to the internal data of the current <see cref="Hunspell"/> class.
-		/// You must store your user dictionary elsewhere and Add() all words every time you create a new <see cref="Hunspell"/> object. 
+		///                                                                                                         It is only added to the internal data of the current
+		///                                                                                                         <see cref="Hunspell"/>
+		///                                                                                                         class.
+		///                                                                                                         You must store your user dictionary elsewhere and Add() all words every time you create a new
+		///                                                                                                         <see cref="Hunspell"/>
+		///                                                                                                         object.
 		/// </para>
 		/// </remarks>
 		/// <example>
-		/// bool spellBefore = hunspell.Spell("phantasos");
-		/// spellBefore = hunspell.Spell("phantasoses");
-		/// add = hunspell.AddWithAffix("phantasos","fish"); // this fantasy word is affixed like the word fish ( plural es ...)
-		/// spellAfter = hunspell.Spell("phantasos");
-		/// spellAfter = hunspell.Spell("phantasoses"); // the plural (like fish) is also correct
+		/// bool spellBefore = hunspell.Spell("phantasos"); spellBefore = hunspell.Spell("phantasoses"); add = hunspell.AddWithAffix("phantasos","fish"); // this fantasy word is affixed like the word fish ( plural es ...) spellAfter = hunspell.Spell("phantasos"); spellAfter = hunspell.Spell("phantasoses"); // the plural (like fish) is also correct
 		/// </example>
 		public bool AddWithAffix(string word, string example)
 		{
@@ -226,10 +215,10 @@ namespace NHunspell
 		/// Analyzes the specified word.
 		/// </summary>
 		/// <param name="word">
-		/// The word to analyze.
+		/// The word to analyze. 
 		/// </param>
 		/// <returns>
-		/// List of stems and the according morphology
+		/// List of stems and the according morphology 
 		/// </returns>
 		public List<string> Analyze(string word)
 		{
@@ -255,15 +244,57 @@ namespace NHunspell
 		}
 
 		/// <summary>
+		/// The dispose.
+		/// </summary>
+		public void Dispose()
+		{
+			this.Dispose(true);
+		}
+
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		/// <param name="callFromDispose">
+		/// The call From Dispose.
+		/// </param>
+		public void Dispose(bool callFromDispose)
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+
+			IsDisposed = true;
+
+			if (this.unmanagedHandle != IntPtr.Zero)
+			{
+				MarshalHunspellDll.HunspellFree(this.unmanagedHandle);
+				this.unmanagedHandle = IntPtr.Zero;
+			}
+
+			if (this.nativeDllIsReferenced)
+			{
+				MarshalHunspellDll.UnReferenceNativeHunspellDll();
+				this.nativeDllIsReferenced = false;
+			}
+
+			if (callFromDispose)
+			{
+				GC.SuppressFinalize(this);
+			}
+		}
+
+		/// <summary>
 		/// Generates the specified word by a sample.
 		/// </summary>
 		/// <param name="word">
-		/// The word.
+		/// The word. 
 		/// </param>
 		/// <param name="sample">
-		/// The sample.
+		/// The sample. 
 		/// </param>
 		/// <returns>
+		/// The <see cref="List"/>.
 		/// </returns>
 		public List<string> Generate(string word, string sample)
 		{
@@ -292,10 +323,10 @@ namespace NHunspell
 		/// Loads the specified affix and dictionary file.
 		/// </summary>
 		/// <param name="affFile">
-		/// The affix file.
+		/// The affix file. 
 		/// </param>
 		/// <param name="dictFile">
-		/// The dictionary file.
+		/// The dictionary file. 
 		/// </param>
 		public void Load(string affFile, string dictFile)
 		{
@@ -306,13 +337,13 @@ namespace NHunspell
 		/// Loads the specified affix and dictionary file.
 		/// </summary>
 		/// <param name="affFile">
-		/// The affix file.
+		/// The affix file. 
 		/// </param>
 		/// <param name="dictFile">
-		/// The dictionary file.
+		/// The dictionary file. 
 		/// </param>
 		/// <param name="key">
-		/// The key for encrypted dictionaries.
+		/// The key for encrypted dictionaries. 
 		/// </param>
 		/// <exception cref="FileNotFoundException">
 		/// </exception>
@@ -355,10 +386,10 @@ namespace NHunspell
 		/// Loads the specified affix and dictionary data.
 		/// </summary>
 		/// <param name="affixFileData">
-		/// The affix file data.
+		/// The affix file data. 
 		/// </param>
 		/// <param name="dictionaryFileData">
-		/// The dictionary file data.
+		/// The dictionary file data. 
 		/// </param>
 		public void Load(byte[] affixFileData, byte[] dictionaryFileData)
 		{
@@ -369,34 +400,52 @@ namespace NHunspell
 		/// Loads the specified affix and dictionary data.
 		/// </summary>
 		/// <param name="affixFileData">
-		/// The affix file data.
+		/// The affix file data. 
 		/// </param>
 		/// <param name="dictionaryFileData">
-		/// The dictionary file data.
+		/// The dictionary file data. 
 		/// </param>
 		/// <param name="key">
-		/// The key for encrypted dictionaries.
+		/// The key for encrypted dictionaries. 
 		/// </param>
 		/// <exception cref="InvalidOperationException">
 		/// </exception>
 		public void Load(byte[] affixFileData, byte[] dictionaryFileData, string key)
 		{
-			if (this.unmanagedHandle != IntPtr.Zero)
+			this.HunspellInit(affixFileData, dictionaryFileData, key);
+		}
+
+		/// <summary>
+		/// Removes the specified word.
+		/// </summary>
+		/// <param name="word">
+		/// The word. 
+		/// </param>
+		/// <returns>
+		/// <c>true</c> if the word was successfully removed, otherwise <c>false</c> 
+		/// </returns>
+		/// <exception cref="System.InvalidOperationException">
+		/// Dictionary is not loaded
+		/// </exception>
+		public bool Remove(string word)
+		{
+			if (this.unmanagedHandle == IntPtr.Zero)
 			{
-				throw new InvalidOperationException("Dictionary is already loaded");
+				throw new InvalidOperationException("Dictionary is not loaded");
 			}
 
-			this.HunspellInit(affixFileData, dictionaryFileData, key);
+			MarshalHunspellDll.HunspellRemove(this.unmanagedHandle, word);
+			return !this.Spell(word);
 		}
 
 		/// <summary>
 		/// Spell check the word.
 		/// </summary>
 		/// <param name="word">
-		/// The word.
+		/// The word. 
 		/// </param>
 		/// <returns>
-		/// <c>true</c> if word is correct, <c>false</c> otherwise
+		/// <c>true</c> if word is correct, <c>false</c> otherwise 
 		/// </returns>
 		public bool Spell(string word)
 		{
@@ -412,10 +461,10 @@ namespace NHunspell
 		/// Gets the word stems for the specified word.
 		/// </summary>
 		/// <param name="word">
-		/// The word.
+		/// The word. 
 		/// </param>
 		/// <returns>
-		/// List of word stems
+		/// List of word stems 
 		/// </returns>
 		public List<string> Stem(string word)
 		{
@@ -444,10 +493,10 @@ namespace NHunspell
 		/// Gets a list of suggestions for the specified (misspelled) word.
 		/// </summary>
 		/// <param name="word">
-		/// The word.
+		/// The word. 
 		/// </param>
 		/// <returns>
-		/// The list of suggestions
+		/// The list of suggestions 
 		/// </returns>
 		public List<string> Suggest(string word)
 		{
@@ -499,48 +548,30 @@ namespace NHunspell
 
 		#endregion
 
-		#region Implemented Interfaces
-
-		#region IDisposable
-
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		private void Dispose(bool disposing)
-		{
-			MarshalHunspellDll.HunspellFree(this.unmanagedHandle);
-			this.unmanagedHandle = IntPtr.Zero;
-		}
-
-		#endregion
-
-		#endregion
-
 		#region Methods
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Hunspell"/> class.
 		/// </summary>
 		/// <param name="affixData">
-		/// The affix data. (aff file data)
+		/// The affix data. (aff file data) 
 		/// </param>
 		/// <param name="dictionaryData">
-		/// The dictionary data. (dic file Data)
+		/// The dictionary data. (dic file Data) 
 		/// </param>
 		/// <param name="key">
-		/// The key for encrypted dictionaries.
+		/// The key for encrypted dictionaries. 
 		/// </param>
 		private void HunspellInit(byte[] affixData, byte[] dictionaryData, string key)
 		{
-			MarshalHunspellDll.LoadNativeHunspellDll();
-			this.unmanagedHandle = MarshalHunspellDll.HunspellInit(
-				affixData, new IntPtr(affixData.Length), dictionaryData, new IntPtr(dictionaryData.Length), key);
+			if (this.unmanagedHandle != IntPtr.Zero)
+			{
+				throw new InvalidOperationException("Dictionary is already loaded");
+			}
+
+			MarshalHunspellDll.ReferenceNativeHunspellDll();
+			this.nativeDllIsReferenced = true;
+			this.unmanagedHandle = MarshalHunspellDll.HunspellInit(affixData, new IntPtr(affixData.Length), dictionaryData, new IntPtr(dictionaryData.Length), key);
 		}
 
 		#endregion
