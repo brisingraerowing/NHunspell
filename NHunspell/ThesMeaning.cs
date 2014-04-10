@@ -12,19 +12,19 @@ namespace NHunspell
     using System.Collections.Generic;
 
     /// <summary>
-    /// Holds a meaning and its synonyms
+    ///   Holds a meaning and its synonyms
     /// </summary>
     public class ThesMeaning
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
-        /// The description.
+        ///   The description.
         /// </summary>
         private readonly string description;
 
         /// <summary>
-        /// The synonyms.
+        ///   The synonyms.
         /// </summary>
         private readonly List<string> synonyms;
 
@@ -36,10 +36,10 @@ namespace NHunspell
         /// Initializes a new instance of the <see cref="ThesMeaning"/> class.
         /// </summary>
         /// <param name="description">
-        /// The meaning description.
+        /// The meaning description. 
         /// </param>
         /// <param name="synonyms">
-        /// The synonyms for this meaning.
+        /// The synonyms for this meaning. 
         /// </param>
         public ThesMeaning(string description, List<string> synonyms)
         {
@@ -49,12 +49,12 @@ namespace NHunspell
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         /// <summary>
-        /// Gets the description of the meaning.
+        ///   Gets the description of the meaning.
         /// </summary>
-        /// <value>The description.</value>
+        /// <value> The description. </value>
         public string Description
         {
             get
@@ -64,9 +64,9 @@ namespace NHunspell
         }
 
         /// <summary>
-        /// Gets the synonyms of the meaning.
+        ///   Gets the synonyms of the meaning.
         /// </summary>
-        /// <value>The synonyms.</value>
+        /// <value> The synonyms. </value>
         public List<string> Synonyms
         {
             get

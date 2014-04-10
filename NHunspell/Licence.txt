@@ -3,8 +3,7 @@
 * LGPL (http://www.gnu.org/licenses/lgpl.html)
 * MPL  (http://www.mozilla.org/MPL/MPL-1.1.html)
 
-Copyright: Thomas MAierhofer, Lazlo Nemeth and all contributing authors.
-Sponsor of this Project : maierhofer software (www.maierhofer.de) and MSE-iT (www.mse-it.de)
+Copyright: Thomas Maierhofer, Lazlo Nemeth and all contributing authors.
 
 If you use NHunspell and like it, please put a link on http://nhunspell.sourceforge.net/ 
 or write something in your blog about it. Thanks.

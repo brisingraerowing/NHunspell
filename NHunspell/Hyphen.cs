@@ -14,14 +14,19 @@ namespace NHunspell
     using System.Runtime.InteropServices;
 
     /// <summary>
-    /// Hyphenation functions.
+    ///   Hyphenation functions.
     /// </summary>
     public class Hyphen : IDisposable
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
-        /// The handle to the unmanaged Hyphen object
+        /// The native dll is referenced.
+        /// </summary>
+        private bool nativeDllIsReferenced;
+
+        /// <summary>
+        ///   The handle to the unmanaged Hyphen object
         /// </summary>
         private IntPtr unmanagedHandle;
 
@@ -30,7 +35,7 @@ namespace NHunspell
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Hyphen"/> class.
+        ///   Initializes a new instance of the <see cref="Hyphen" /> class.
         /// </summary>
         public Hyphen()
         {
@@ -40,7 +45,7 @@ namespace NHunspell
         /// Initializes a new instance of the <see cref="Hyphen"/> class.
         /// </summary>
         /// <param name="dictFile">
-        /// The dictionary file.
+        /// The dictionary file. 
         /// </param>
         public Hyphen(string dictFile)
         {
@@ -51,7 +56,7 @@ namespace NHunspell
         /// Initializes a new instance of the <see cref="Hyphen"/> class.
         /// </summary>
         /// <param name="dictFileData">
-        /// The dictionary file data.
+        /// The dictionary file data. 
         /// </param>
         public Hyphen(byte[] dictFileData)
         {
@@ -60,20 +65,15 @@ namespace NHunspell
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         /// <summary>
-        /// Gets or sets the path to the native Hunspell DLLs.
+        ///   Gets or sets the path to the native Hunspell DLLs.
         /// </summary>
-        /// <value>The Path (without file name)</value>
+        /// <value> The Path (without file name) </value>
         /// <remarks>
-        /// <para>
-        /// This property can only be set before the first use of NHunspell. 
-        /// </para>
-        /// <para>
-        /// NHunspell uses specialized DLLs with platform specific names. 
-        /// Hunspellx86.dll is the 32Bit X86 version, Hunspellx64.dll is the 64Bit AMD64 version. 
-        /// </para>
+        ///   <para>This property can only be set before the first use of NHunspell.</para> <para>NHunspell uses specialized DLLs with platform specific names. 
+        ///                                                                                   Hunspellx86.dll is the 32Bit X86 version, Hunspellx64.dll is the 64Bit AMD64 version.</para>
         /// </remarks>
         public static string NativeDllPath
         {
@@ -89,25 +89,64 @@ namespace NHunspell
         }
 
         /// <summary>
-        /// Gets a value indicating whether IsDisposed.
+        /// Gets a value indicating whether is disposed.
         /// </summary>
-        public bool IsDisposed
-        {
-            get
-            {
-                return this.unmanagedHandle == IntPtr.Zero;
-            }
-        }
+        public bool IsDisposed { get; private set; }
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <param name="callFromDispose">
+        /// The call From Dispose.
+        /// </param>
+        public void Dispose(bool callFromDispose)
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            IsDisposed = true; 
+
+            if (this.unmanagedHandle != IntPtr.Zero)
+            {
+                MarshalHunspellDll.HyphenFree(this.unmanagedHandle);
+                this.unmanagedHandle = IntPtr.Zero;
+            }
+
+            if (this.nativeDllIsReferenced)
+            {
+                MarshalHunspellDll.UnReferenceNativeHunspellDll();
+                this.nativeDllIsReferenced = false;
+            }
+
+            if (callFromDispose)
+            {
+                GC.SuppressFinalize(this);
+            }
+        }
 
         /// <summary>
         /// Hyphenates the specified word.
         /// </summary>
-        /// <param name="word">The word.</param>
-        /// <returns>A <see cref="HyphenResult"/> object with data for simple and complex hyphenation</returns>
+        /// <param name="word">
+        /// The word. 
+        /// </param>
+        /// <returns>
+        /// A <see cref="HyphenResult"/> object with data for simple and complex hyphenation 
+        /// </returns>
         public HyphenResult Hyphenate(string word)
         {
             if (this.unmanagedHandle == IntPtr.Zero)
@@ -158,19 +197,16 @@ namespace NHunspell
                 }
             }
 
-            var result = new HyphenResult(
-                Marshal.PtrToStringUni(hyphenatedWord), 
-                hyphenationPointsArray, 
-                hyphenationRepArray, 
-                hyphenationPosArray, 
-                hyphenationCutArray);
+            var result = new HyphenResult(Marshal.PtrToStringUni(hyphenatedWord), hyphenationPointsArray, hyphenationRepArray, hyphenationPosArray, hyphenationCutArray);
             return result;
         }
 
         /// <summary>
         /// Loads the specified dictionary file.
         /// </summary>
-        /// <param name="dictFile">The dictionary file.</param>
+        /// <param name="dictFile">
+        /// The dictionary file. 
+        /// </param>
         /// <exception cref="FileNotFoundException">
         /// </exception>
         public void Load(string dictFile)
@@ -193,42 +229,18 @@ namespace NHunspell
             Load(dictionaryData);
         }
 
-
         /// <summary>
         /// Loads the specified dictionary file data.
         /// </summary>
-        /// <param name="dictFileData">The dictionary file data.</param>
+        /// <param name="dictFileData">
+        /// The dictionary file data. 
+        /// </param>
         /// <exception cref="InvalidOperationException">
         /// </exception>
         public void Load(byte[] dictFileData)
         {
-            if (this.unmanagedHandle != IntPtr.Zero)
-            {
-                throw new InvalidOperationException("Dictionary is already loaded");
-            }
-
             this.Init(dictFileData);
         }
-
-        #endregion
-
-        #region Implemented Interfaces
-
-        #region IDisposable
-
-        /// <summary>
-        /// The dispose.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!this.IsDisposed)
-            {
-                MarshalHunspellDll.HyphenFree(this.unmanagedHandle);
-                this.unmanagedHandle = IntPtr.Zero;
-            }
-        }
-
-        #endregion
 
         #endregion
 
@@ -238,11 +250,18 @@ namespace NHunspell
         /// The init.
         /// </summary>
         /// <param name="dictionaryData">
-        /// The dictionary data.
+        /// The dictionary data. 
         /// </param>
         private void Init(byte[] dictionaryData)
         {
-            MarshalHunspellDll.LoadNativeHunspellDll();
+            if (this.unmanagedHandle != IntPtr.Zero)
+            {
+                throw new InvalidOperationException("Dictionary is already loaded");
+            }
+
+            MarshalHunspellDll.ReferenceNativeHunspellDll();
+            this.nativeDllIsReferenced = true;
+
             this.unmanagedHandle = MarshalHunspellDll.HyphenInit(dictionaryData, new IntPtr(dictionaryData.Length));
         }
 
