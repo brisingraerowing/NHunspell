@@ -183,28 +183,6 @@ namespace NHunspell
             }
         }
 
-        /// <summary>
-        ///   Gets or sets the MyThes index file.
-        /// </summary>
-        /// <value> My thes idx file. </value>
-        public string MyThesIdxFile
-        {
-            get
-            {
-                return this.myThesIdxFile;
-            }
-
-            set
-            {
-                string fullPath = Path.GetFullPath(value);
-                if (!File.Exists(fullPath))
-                {
-                    throw new FileNotFoundException("MyThes Idx file not found: " + fullPath);
-                }
-
-                this.myThesIdxFile = fullPath;
-            }
-        }
 
         /// <summary>
         ///   Gets or sets the processors (cores) used by the <see cref="SpellFactory" /> .

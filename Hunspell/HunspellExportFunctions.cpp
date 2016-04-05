@@ -226,6 +226,14 @@ DLLEXPORT bool HunspellAdd(NHunspell * handle, wchar_t * word )
 	return success != 0;
 }
 
+DLLEXPORT bool HunspellRemove(NHunspell * handle, wchar_t * word )
+{
+	char * word_buffer = handle->GetWordBuffer(word);
+	int success = handle->remove(word_buffer);
+	return success != 0;
+}
+
+
 DLLEXPORT bool HunspellAddWithAffix(NHunspell * handle, wchar_t * word, wchar_t * example )
 {
 	char * word_buffer = ((NHunspell *) handle)->GetWordBuffer(word);

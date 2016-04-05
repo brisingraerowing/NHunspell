@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<topic id="9e042fd9-36a8-4493-939d-ff1c369c6f02" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>
+        Welcome to the NHunspell Class Reference.
+      </para>
+      <para>Here you find a reference of namespaces, classes, interfaces.
+        Below is an overview how to get informations about the product, the installation and usage of NHunspell
+      </para>
+    </introduction>
+
+    <section>
+      <title>Resources</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            <para>
+              <externalLink>
+                <linkText>Product Information</linkText>
+                <linkAlternateText>NHunspell is available under various licenses. It is free and open source.</linkAlternateText>
+                <linkUri>http://www.crawler-lib.net/nhunspell</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+            <para>
+              The different open source licenses, download and install information, dictionaries, source-code and an overview over NHunspell. 
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+          <externalLink>
+            <linkText>Support Forum</linkText>
+            <linkAlternateText>You can read without registration, but you have to register if you want to post</linkAlternateText>
+            <linkUri>http://www.crawler-lib.net/boards/forum/5/nhunspell</linkUri>
+            <linkTarget>_blank</linkTarget>
+          </externalLink>
+          </para>
+          <para>
+            The free basic support is provided with this support forum. Commercial support, consulting and development services are also available.
+          </para>
+          </listItem>
+          <listItem>
+            <para>
+              <externalLink>
+                <linkText>Code Samples</linkText>
+                <linkAlternateText>Download the NHunspell code samples solution and open it in Visual Studio to get an overview over the framework.</linkAlternateText>
+                <linkUri>http://www.crawler-lib.net/csharp-code-samples-nhunspell</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+            <para>
+              Samples how to use NHunspell.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              <externalLink>
+                <linkText>NHunspell NuGet Packages</linkText>
+                <linkAlternateText>Install NHunspell in your project with the NuGet Package Manager in Visual Studio</linkAlternateText>
+                <linkUri>http://www.nuget.org/packages/NHunspell/</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+            <para>NuGet is the recommended way how the NHunspell should be installed in your projects.</para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+    <relatedTopics>
+
+    </relatedTopics>
+
+
+  </developerConceptualDocument>
+</topic>

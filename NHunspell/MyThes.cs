@@ -76,7 +76,7 @@ namespace NHunspell
         /// <remarks>
         /// This function is obsolete, idx File is not longer needed, <see cref="MyThes"/> works now completely in memory
         /// </remarks>
-        [Obsolete("idx File is not longer needed, MyThes works completely in memory")]
+        [Obsolete("idx File is not longer needed, MyThes works completely in memory", true)]
         public MyThes(string idxFile, string datFile)
         {
             Load(datFile);

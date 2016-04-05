@@ -67,6 +67,9 @@ struct _HyphenDict {
   char rhmin;    /* righthyphenmin: min. hyph. distance from the right side */
   char clhmin;   /* min. hyph. distance from the left compound boundary */
   char crhmin;   /* min. hyph. distance from the right compound boundary */
+  char * nohyphen; /* comma separated list of characters or character
+                    sequences with forbidden hyphenation */
+  int nohyphenl; /* count of elements in nohyphen */
   /* system variables */
   int num_states;
   char cset[MAX_NAME];
@@ -91,6 +94,7 @@ struct _HyphenTrans {
 };
 
 HyphenDict *hnj_hyphen_load (const char *fn);
+HyphenDict *hnj_hyphen_load_file (FILE *f);
 void hnj_hyphen_free (HyphenDict *dict);
 
 /* obsolete, use hnj_hyphen_hyphenate2() or *hyphenate3() functions) */
