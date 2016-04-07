@@ -18,6 +18,8 @@ namespace NHunspell
     /// </summary>
     internal static class MarshalHunspellDll
     {
+		private static DllLoadUtils dllLoadUtils;
+
         #region Static Fields
 
         /// <summary>
@@ -210,66 +212,6 @@ namespace NHunspell
 
         #endregion
 
-        #region Enums
-
-        /// <summary>
-        ///   The processo r_ architecture.
-        /// </summary>
-        internal enum PROCESSOR_ARCHITECTURE : ushort
-        {
-            /// <summary>
-            ///   The intel.
-            /// </summary>
-            Intel = 0, 
-
-            /// <summary>
-            ///   The mips.
-            /// </summary>
-            MIPS = 1, 
-
-            /// <summary>
-            ///   The alpha.
-            /// </summary>
-            Alpha = 2, 
-
-            /// <summary>
-            ///   The ppc.
-            /// </summary>
-            PPC = 3, 
-
-            /// <summary>
-            ///   The shx.
-            /// </summary>
-            SHX = 4, 
-
-            /// <summary>
-            ///   The arm.
-            /// </summary>
-            ARM = 5, 
-
-            /// <summary>
-            ///   The i a 64.
-            /// </summary>
-            IA64 = 6, 
-
-            /// <summary>
-            ///   The alpha 64.
-            /// </summary>
-            Alpha64 = 7, 
-
-            /// <summary>
-            ///   The amd 64.
-            /// </summary>
-            Amd64 = 9, 
-
-            /// <summary>
-            ///   The unknown.
-            /// </summary>
-            Unknown = 0xFFFF
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -304,42 +246,6 @@ namespace NHunspell
         #region Methods
 
         /// <summary>
-        /// The get proc address.
-        /// </summary>
-        /// <param name="hModule">
-        /// The h module. 
-        /// </param>
-        /// <param name="procName">
-        /// The proc name. 
-        /// </param>
-        /// <returns>
-        /// The <see cref="IntPtr"/>.
-        /// </returns>
-        [DllImport("kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
-        internal static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
-
-        /// <summary>
-        /// The get system info.
-        /// </summary>
-        /// <param name="lpSystemInfo">
-        /// The lp system info. 
-        /// </param>
-        [DllImport("kernel32.dll")]
-        internal static extern void GetSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SYSTEM_INFO lpSystemInfo);
-
-        /// <summary>
-        /// The load library.
-        /// </summary>
-        /// <param name="fileName">
-        /// The file name. 
-        /// </param>
-        /// <returns>
-        /// The <see cref="IntPtr"/>.
-        /// </returns>
-        [DllImport("kernel32.dll")]
-        internal static extern IntPtr LoadLibrary(string fileName);
-
-        /// <summary>
         ///   References the native hunspell DLL.
         /// </summary>
         /// <exception cref="System.DllNotFoundException"></exception>
@@ -350,6 +256,8 @@ namespace NHunspell
             {
                 if (nativeDllReferenceCount == 0)
                 {
+					bool success = false;
+
                     if (dllHandle != IntPtr.Zero)
                     {
                         throw new InvalidOperationException("Native Dll handle is not Zero");
@@ -357,50 +265,31 @@ namespace NHunspell
 
                     try
                     {
-                        // Initialze the dynamic marshall Infrastructure to call the 32Bit (x86) or the 64Bit (x64) Dll respectively 
-                        var info = new SYSTEM_INFO();
-                        GetSystemInfo(ref info);
+						string dllName;
+						string dllPath;
 
-                        // Load the correct DLL according to the processor architecture
-                        switch (info.wProcessorArchitecture)
+						if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+						{
+							dllLoadUtils = new DllLoadUtilsWindows();
+							if (IntPtr.Size == 4)
+								dllName = Resources.HunspellX86DllName;
+							else
+								dllName = Resources.HunspellX64DllName;
+						}
+						else
+						{
+							dllLoadUtils = new DllLoadUtilsUnix();
+							dllName = "libhunspell.dylib";
+						}
+
+						dllPath = Path.Combine(NativeDLLPath, dllName);
+						dllHandle = dllLoadUtils.LoadLibrary(Path.Combine(NativeDLLPath, dllPath));
+                        if (dllHandle == IntPtr.Zero)
                         {
-                            case PROCESSOR_ARCHITECTURE.Intel:
-                                string pathx86 = NativeDLLPath;
-                                if (pathx86 != string.Empty && !pathx86.EndsWith("\\"))
-                                {
-                                    pathx86 += "\\";
-                                }
-
-                                pathx86 += Resources.HunspellX86DllName;
-
-                                dllHandle = LoadLibrary(pathx86);
-                                if (dllHandle == IntPtr.Zero)
-                                {
-                                    throw new DllNotFoundException(string.Format(Resources.HunspellX86DllNotFoundMessage, pathx86));
-                                }
-
-                                break;
-
-                            case PROCESSOR_ARCHITECTURE.Amd64:
-                                string pathx64 = NativeDLLPath;
-                                if (pathx64 != string.Empty && !pathx64.EndsWith("\\"))
-                                {
-                                    pathx64 += "\\";
-                                }
-
-                                pathx64 += Resources.HunspellX64DllName;
-
-                                dllHandle = LoadLibrary(pathx64);
-                                if (dllHandle == IntPtr.Zero)
-                                {
-                                    throw new DllNotFoundException(string.Format(Resources.HunspellX64DllNotFoundMessage, pathx64));
-                                }
-
-                                break;
-
-                            default:
-                                throw new NotSupportedException(Resources.HunspellNotAvailabeForProcessorArchitectureMessage + info.wProcessorArchitecture);
-                                break;
+							if (IntPtr.Size == 4)
+								throw new DllNotFoundException(string.Format(Resources.HunspellX86DllNotFoundMessage, dllPath));
+							else
+								throw new DllNotFoundException(string.Format(Resources.HunspellX64DllNotFoundMessage, dllPath));
                         }
 
                         HunspellInit = (HunspellInitDelegate)GetDelegate("HunspellInit", typeof(HunspellInitDelegate));
@@ -421,16 +310,16 @@ namespace NHunspell
                         HyphenInit = (HyphenInitDelegate)GetDelegate("HyphenInit", typeof(HyphenInitDelegate));
                         HyphenFree = (HyphenFreeDelegate)GetDelegate("HyphenFree", typeof(HyphenFreeDelegate));
                         HyphenHyphenate = (HyphenHyphenateDelegate)GetDelegate("HyphenHyphenate", typeof(HyphenHyphenateDelegate));
+
+						success = true;
                     }
-                    catch (Exception e)
+					finally
                     {
-                        if (dllHandle != IntPtr.Zero)
+						if (dllHandle != IntPtr.Zero && !success)
                         {
-                            FreeLibrary(dllHandle);
+                            dllLoadUtils.FreeLibrary(dllHandle);
                             dllHandle = IntPtr.Zero;
                         }
-
-                        throw;
                     }
                 }
 
@@ -461,23 +350,11 @@ namespace NHunspell
                         throw new InvalidOperationException("Native DLL handle is Zero");
                     }
 
-                    FreeLibrary(dllHandle);
+					dllLoadUtils.FreeLibrary(dllHandle);
                     dllHandle = IntPtr.Zero;
                 }
             }
         }
-
-        /// <summary>
-        /// The free library.
-        /// </summary>
-        /// <param name="hModule">
-        /// The h module. 
-        /// </param>
-        /// <returns>
-        /// The free library. 
-        /// </returns>
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool FreeLibrary(IntPtr hModule);
 
         /// <summary>
         /// The get delegate.
@@ -495,7 +372,7 @@ namespace NHunspell
         /// </exception>
         private static Delegate GetDelegate(string procName, Type delegateType)
         {
-            IntPtr procAdress = GetProcAddress(dllHandle, procName);
+			IntPtr procAdress = dllLoadUtils.GetProcAddress(dllHandle, procName);
             if (procAdress == IntPtr.Zero)
             {
                 throw new EntryPointNotFoundException("Function: " + procName);
@@ -506,66 +383,77 @@ namespace NHunspell
 
         #endregion
 
-        /// <summary>
-        ///   The syste m_ info.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct SYSTEM_INFO
-        {
-            /// <summary>
-            ///   The w processor architecture.
-            /// </summary>
-            internal PROCESSOR_ARCHITECTURE wProcessorArchitecture;
+		interface DllLoadUtils
+		{
+			IntPtr LoadLibrary(string fileName);
+			void FreeLibrary(IntPtr handle);
+			IntPtr GetProcAddress(IntPtr dllHandle, string name);
+		}
 
-            /// <summary>
-            ///   The w reserved.
-            /// </summary>
-            internal ushort wReserved;
+		public class DllLoadUtilsWindows : DllLoadUtils
+		{
+			void DllLoadUtils.FreeLibrary(IntPtr handle)
+			{
+				FreeLibrary(handle);
+			}
 
-            /// <summary>
-            ///   The dw page size.
-            /// </summary>
-            internal uint dwPageSize;
+			IntPtr DllLoadUtils.GetProcAddress(IntPtr dllHandle, string name)
+			{
+				return GetProcAddress(dllHandle, name);
+			}
 
-            /// <summary>
-            ///   The lp minimum application address.
-            /// </summary>
-            internal IntPtr lpMinimumApplicationAddress;
+			IntPtr DllLoadUtils.LoadLibrary(string fileName)
+			{
+				return LoadLibrary(fileName);
+			}
 
-            /// <summary>
-            ///   The lp maximum application address.
-            /// </summary>
-            internal IntPtr lpMaximumApplicationAddress;
+			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+			private static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 
-            /// <summary>
-            ///   The dw active processor mask.
-            /// </summary>
-            internal IntPtr dwActiveProcessorMask;
+			[DllImport("kernel32.dll")]
+			private static extern IntPtr LoadLibrary(string fileName);
 
-            /// <summary>
-            ///   The dw number of processors.
-            /// </summary>
-            internal uint dwNumberOfProcessors;
+			[DllImport("kernel32.dll", SetLastError = true)]
+			private static extern bool FreeLibrary(IntPtr hModule);
+		}
 
-            /// <summary>
-            ///   The dw processor type.
-            /// </summary>
-            internal uint dwProcessorType;
+		internal class DllLoadUtilsUnix : DllLoadUtils
+		{
+			public IntPtr LoadLibrary(string fileName)
+			{
+				return dlopen(fileName, RTLD_NOW);
+			}
 
-            /// <summary>
-            ///   The dw allocation granularity.
-            /// </summary>
-            internal uint dwAllocationGranularity;
+			public void FreeLibrary(IntPtr handle)
+			{
+				dlclose(handle);
+			}
 
-            /// <summary>
-            ///   The dw processor level.
-            /// </summary>
-            internal ushort dwProcessorLevel;
+			public IntPtr GetProcAddress(IntPtr dllHandle, string name)
+			{
+				// clear previous errors if any
+				dlerror();
+				var res = dlsym(dllHandle, name);
+				var errPtr = dlerror();
+				if (errPtr != IntPtr.Zero) {
+					throw new Exception("dlsym: " + Marshal.PtrToStringAnsi(errPtr));
+				}
+				return res;
+			}
 
-            /// <summary>
-            ///   The dw processor revision.
-            /// </summary>
-            internal ushort dwProcessorRevision;
-        }
+			const int RTLD_NOW = 2;
+
+			[DllImport("libdl.dylib")]
+			private static extern IntPtr dlopen(String fileName, int flags);
+
+			[DllImport("libdl.dylib")]
+			private static extern IntPtr dlsym(IntPtr handle, String symbol);
+
+			[DllImport("libdl.dylib")]
+			private static extern int dlclose(IntPtr handle);
+
+			[DllImport("libdl.dylib")]
+			private static extern IntPtr dlerror();
+		}
     }
 }
