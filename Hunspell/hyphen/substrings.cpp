@@ -163,14 +163,16 @@ static char *combine(
   return expr;
 }
 
-static char *pattab_key[MAXPATHS];
-static char *pattab_val[MAXPATHS];
-static char *newpattab_key[MAXPATHS];
-static char *newpattab_val[MAXPATHS];
 
+//
+//
 int main(int argc, const char* argv[]) {
   FILE *in, *out;
+  char *pattab_key[MAXPATHS];
+  char *pattab_val[MAXPATHS];
   int   patterns = 0;
+  char *newpattab_key[MAXPATHS];
+  char *newpattab_val[MAXPATHS];
   int   newpatterns = 0;
   char format[132]; // 64+65+newline+zero+spare
   int p;
@@ -178,7 +180,7 @@ int main(int argc, const char* argv[]) {
   if ((in = fopen(argv[1],"r"))==NULL) die("Could not read input");
   if ((out = fopen(argv[2],"w"))==NULL) die("Could not create output");
   // read all patterns and split in pure text (_key) & expanded patterns (_val)
-  while(fgets(format,132,in) != NULL) {
+  while(fgets(format,132,in)) {
     int l = strlen(format);
     if (format[l-1]=='\n') { l--; format[l]=0; } // Chomp
     if (format[0]=='%' || format[0]==0) {
@@ -191,7 +193,6 @@ int main(int argc, const char* argv[]) {
       int i,j;
       char *pat = (char*) malloc(l+1);
       char *org = (char*) malloc(l*2+1);
-      if (pat==NULL || org==NULL) die("not enough memory");
       expand(org,format,l);
       // remove hyphenation encoders (digits) from pat
       for (i=0,j=0; i<l; i++) {
@@ -222,13 +223,11 @@ int main(int argc, const char* argv[]) {
         strncpy(subpat,pat+i,j); subpat[j]=0;
         if ((subpat_ndx = find_in(pattab_key,patterns,subpat))>=0) {
           int   newpat_ndx;
-          char *newpat=(char *) malloc(l+1);
-          if (newpat==NULL) die("not enough memory");
+          char *newpat=(char*)malloc(l+1);
       //printf("%s is embedded in %s\n",pattab_val[subpat_ndx],pattab_val[p]);
           strncpy(newpat, pat+0,l); newpat[l]=0;
           if ((newpat_ndx = find_in(newpattab_key,newpatterns,newpat))<0) {
             char *neworg = (char *) malloc(132); // TODO: compute exact length
-            if (neworg==NULL) die("not enough memory");
             expand(neworg,newpat,l);
             newpattab_key[newpatterns]   = newpat;
             newpattab_val[newpatterns++] = combine(neworg,pattab_val[subpat_ndx]);

@@ -15,10 +15,7 @@ struct dictentry {
 
 class LIBHUNSPELL_DLL_EXPORTED DictMgr
 {
-private:
-  DictMgr(const DictMgr&);
-  DictMgr& operator = (const DictMgr&);
-private:
+
   int                 numdict;
   dictentry *         pdentry;
 

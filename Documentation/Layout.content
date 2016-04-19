@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Topics>
-  <Topic id="9e042fd9-36a8-4493-939d-ff1c369c6f02" visible="True" isSelected="true" title="NHunspell Overview" />
+<Topics defaultTopic="NHunspell-Documentation-afadbe31">
+  <Topic id="NHunspell-Documentation-afadbe31" visible="True" title="NHunspell Documentation" />
 </Topics>

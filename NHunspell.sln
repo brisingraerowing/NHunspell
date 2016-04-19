@@ -1,46 +1,55 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
-MinimumVisualStudioVersion = 10.0.40219.1
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{50E331DB-7D25-440A-9086-86EBDE0F2D66}"
 	ProjectSection(SolutionItems) = preProject
-		BuildConfig.xml = BuildConfig.xml
-		HunspellVersions.txt = HunspellVersions.txt
-		install.ps1 = install.ps1
-		NHunspell.nuspec = NHunspell.nuspec
-		NHunspellCopyNativeDllsCmd.ps1 = NHunspellCopyNativeDllsCmd.ps1
-		Readme.creole = Readme.creole
-		uninstall.ps1 = uninstall.ps1
-		Hunspell\UpdateToNewHunspellSourcecode.txt = Hunspell\UpdateToNewHunspellSourcecode.txt
+		NHunspell-Documentation.docx = NHunspell-Documentation.docx
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{CE80DE60-3210-4D1B-9C62-7C7F91DA3621}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{D1CCA085-3742-43CE-8EDD-A4581CFB53FE}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\NHunspell-Documentation.shfbproj = Documentation\NHunspell-Documentation.shfbproj
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hunspell", "Hunspell\Hunspell.vcxproj", "{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHunspell", "NHunspell\NHunspell.csproj", "{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}"
-EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "NHunspell-Documentation", "Documentation\NHunspell-Documentation.shfbproj", "{F19BE8F6-BA5E-433A-9CAA-968A36FA8ECB}"
 	ProjectSection(ProjectDependencies) = postProject
-		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C} = {57A9FC0D-F08A-4B26-B8C4-D770B529E00C}
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29} = {D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE80DE60-3210-4D1B-9C62-7C7F91DA3621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE80DE60-3210-4D1B-9C62-7C7F91DA3621}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE80DE60-3210-4D1B-9C62-7C7F91DA3621}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE80DE60-3210-4D1B-9C62-7C7F91DA3621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|x64.ActiveCfg = Debug|x64
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|x64.Build.0 = Debug|x64
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|x86.ActiveCfg = Debug|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Debug|x86.Build.0 = Debug|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|Any CPU.ActiveCfg = Release|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|x64.ActiveCfg = Release|x64
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|x64.Build.0 = Release|x64
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|x86.ActiveCfg = Release|Win32
+		{D9E6347A-ABBF-48CA-AE63-6D10C5BACA29}.Release|x86.Build.0 = Release|Win32
 		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|x64.ActiveCfg = Debug|x64
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|x64.Build.0 = Debug|x64
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|x86.ActiveCfg = Debug|x86
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|x86.Build.0 = Debug|x86
 		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F19BE8F6-BA5E-433A-9CAA-968A36FA8ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F19BE8F6-BA5E-433A-9CAA-968A36FA8ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F19BE8F6-BA5E-433A-9CAA-968A36FA8ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|x64.ActiveCfg = Release|x64
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|x64.Build.0 = Release|x64
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|x86.ActiveCfg = Release|x86
+		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

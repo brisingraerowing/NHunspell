@@ -11,10 +11,6 @@
 
 class LIBHUNSPELL_DLL_EXPORTED PfxEntry : protected AffEntry
 {
-private:
-       PfxEntry(const PfxEntry&);
-       PfxEntry& operator = (const PfxEntry&);
-private:
        AffixMgr*    pmyMgr;
 
        PfxEntry * next;
@@ -71,10 +67,6 @@ public:
 
 class LIBHUNSPELL_DLL_EXPORTED SfxEntry : protected AffEntry
 {
-private:
-       SfxEntry(const SfxEntry&);
-       SfxEntry& operator = (const SfxEntry&);
-private:
        AffixMgr*    pmyMgr;
        char *       rappnd;
 

@@ -12,12 +12,9 @@ int FileMgr::fail(const char * err, const char * par) {
     return -1;
 }
 
-FileMgr::FileMgr(const char * file, const char * key)
-    : hin(NULL)
-    , linenum(0)
-{
-    in[0] = '\0';
-
+FileMgr::FileMgr(const char * file, const char * key) {
+    linenum = 0;
+    hin = NULL;
     fin = fopen(file, "r");
     if (!fin) {
         // check hzipped file
@@ -42,7 +39,7 @@ char * FileMgr::getline() {
     const char * l;
     linenum++;
     if (fin) return fgets(in, BUFSIZE - 1, fin);
-    if (hin && ((l = hin->getline()) != NULL)) return strcpy(in, l);
+    if (hin && (l = hin->getline())) return strcpy(in, l);
     linenum--;
     return NULL;
 }

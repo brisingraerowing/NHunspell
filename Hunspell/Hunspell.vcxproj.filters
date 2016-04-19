@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Hunspell">
-      <UniqueIdentifier>{6311c1c8-be73-4a64-b079-8b184680dd21}</UniqueIdentifier>
+      <UniqueIdentifier>{e1f91049-527d-44fb-b660-abef7b1be465}</UniqueIdentifier>
     </Filter>
     <Filter Include="Hyphen">
-      <UniqueIdentifier>{db7d336b-5eda-4f50-a375-3c12bee1cfa3}</UniqueIdentifier>
+      <UniqueIdentifier>{40eb42f1-e1d8-4f0d-8ecc-38df9d9cb9e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -13,9 +13,6 @@
       <Filter>Hunspell</Filter>
     </ClCompile>
     <ClCompile Include="hunspell\affixmgr.cxx">
-      <Filter>Hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\csutil.cxx">
       <Filter>Hunspell</Filter>
     </ClCompile>
     <ClCompile Include="hunspell\dictmgr.cxx">
@@ -45,9 +42,6 @@
     <ClCompile Include="hunspell\utf_info.cxx">
       <Filter>Hunspell</Filter>
     </ClCompile>
-    <ClCompile Include="hyphen\csutil.cpp">
-      <Filter>Hyphen</Filter>
-    </ClCompile>
     <ClCompile Include="hyphen\hnjalloc.cpp">
       <Filter>Hyphen</Filter>
     </ClCompile>
@@ -61,6 +55,9 @@
     <ClCompile Include="HunspellExportFunctions.cpp" />
     <ClCompile Include="HyphenExportFunctions.cpp" />
     <ClCompile Include="MemoryFile.cpp" />
+    <ClCompile Include="hunspell\csutil.cxx">
+      <Filter>Hunspell</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hunspell\affentry.hxx">
@@ -140,6 +137,7 @@
     <None Include="hunspell\license.myspell">
       <Filter>Hunspell</Filter>
     </None>
+    <None Include="NHunspellExtensionsIntegrationInfo.txt" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Hunspell.rc" />
