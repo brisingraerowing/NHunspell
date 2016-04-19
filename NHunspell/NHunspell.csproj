@@ -127,7 +127,7 @@
     <Compile Include="Hyphen.cs" />
     <Compile Include="HyphenResult.cs" />
     <Compile Include="LanguageConfig.cs" />
-    <Compile Include="Properties\AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <Compile Include="SpellFactory.cs" />
     <Compile Include="Marshalling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
