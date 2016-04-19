@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -127,6 +127,7 @@
     <Compile Include="Hyphen.cs" />
     <Compile Include="HyphenResult.cs" />
     <Compile Include="LanguageConfig.cs" />
+    <Compile Include="Properties\AssemblyInfoTemplate.cs" />
     <Compile Include="SpellFactory.cs" />
     <Compile Include="Marshalling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -164,11 +165,6 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
+  <Import Project="..\..\..\Tools\BuildTasks\MailClient.BuildTasks.targets" />
   -->
 </Project>
