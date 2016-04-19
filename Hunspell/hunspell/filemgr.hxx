@@ -4,11 +4,14 @@
 
 #include "hunvisapi.h"
 #include "hunzip.hxx"
-#include "../NHunspellExtensions.h"
 #include <stdio.h>
+#include "../NHunspellExtensions.h"
 
 class LIBHUNSPELL_DLL_EXPORTED FileMgr
 {
+private:
+    FileMgr(const FileMgr&);
+    FileMgr& operator = (const FileMgr&);
 protected:
     FILE * fin;
     Hunzip * hin;

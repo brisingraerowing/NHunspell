@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <locale.h>
+#include <mbctype.h>
+
+#include <windows.h>
 #include "NHunspellExtensions.h"
 
 
