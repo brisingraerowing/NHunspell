@@ -1,2 +1,2 @@
-g++ -o libhunspell.dylib -shared hunspell/*.cxx hyphen/hnjalloc.cpp hyphen/hyphen.cpp hyphen/substrings.cpp MemoryFile.cpp MacExportFunctions.cpp -Os -m32 -liconv
+g++ -DBUILDING_LIBHUNSPELL -o libhunspell.dylib -shared hunspell/*.cxx hyphen/hnjalloc.cpp hyphen/hyphen.cpp hyphen/substrings.cpp MemoryFile.cpp MacExportFunctions.cpp -Os -arch i386 -arch x86_64 -liconv
 
