@@ -103,10 +103,6 @@
     <NativeLibs Include="Hunspellx64.dll" Condition="'$(Configuration)' != 'Mono - Debug' and '$(Configuration)' != 'Xamarin - Debug'"  />
     <NativeLibs Include="Hunspellx86.dll" Condition="'$(Configuration)' != 'Mono - Debug' and '$(Configuration)' != 'Xamarin - Debug'" />
     <NativeLibs Include="libhunspell.dylib" Condition="'$(Configuration)' == 'Mono - Debug' or '$(Configuration)' == 'Xamarin - Debug'" />
-    <None Include="@(NativeLibs)">
-      <Link>%(RelativeDir)%(FileName)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="..\..\..\Tools\BuildTasks\Unified.targets" />
   <Import Project="..\..\..\Tools\BuildTasks\MailClient.BuildTasks.targets" />
