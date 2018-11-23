@@ -107,7 +107,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugSymbols>false</DebugSymbols>
     <OutputPath>bin\Xamarin-Release\</OutputPath>
-    <DefineConstants>XAMARINMAC;__UNIFIED__</DefineConstants>
+    <DefineConstants>XAMARINMAC;__UNIFIED__;TRACE</DefineConstants>
     <DocumentationFile>bin\Debug\NHunspell.XML</DocumentationFile>
     <DebugType>none</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
