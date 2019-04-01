@@ -45,11 +45,6 @@ namespace NHunspell
         private string myThesDatFile;
 
         /// <summary>
-        ///   The my thes idx file.
-        /// </summary>
-        private string myThesIdxFile;
-
-        /// <summary>
         ///   The processors.
         /// </summary>
         private int processors;

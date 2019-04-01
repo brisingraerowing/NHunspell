@@ -450,20 +450,20 @@ namespace NHunspell
             }
         }
 
-        /// <summary>
-        /// The suggest.
-        /// </summary>
-        /// <param name="word">
-        /// The word. 
-        /// </param>
-        /// <returns>
-        /// The <see cref="List"/>.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// </exception>
-        public List<string> Suggest(string word)
+		/// <summary>
+		/// The suggest.
+		/// </summary>
+		/// <param name="word">
+		/// The word. 
+		/// </param>
+		/// <returns>
+		/// The <see cref="List{T}"/>.
+		/// </returns>
+		/// <exception cref="ObjectDisposedException">
+		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		/// </exception>
+		public List<string> Suggest(string word)
         {
             Hunspell hunspell = this.HunspellsPop();
             try

@@ -110,6 +110,9 @@ namespace NHunspell
 			Load(affixFileData, dictionaryFileData);
 		}
 
+		/// <summary>
+		/// Destructor. Calls Dispose.
+		/// </summary>
 		~Hunspell()
 		{
 			Dispose(false);
@@ -294,7 +297,7 @@ namespace NHunspell
 		/// The sample. 
 		/// </param>
 		/// <returns>
-		/// The <see cref="List"/>.
+		/// The <see cref="List{T}"/>.
 		/// </returns>
 		public List<string> Generate(string word, string sample)
 		{
@@ -522,6 +525,12 @@ namespace NHunspell
 			return result;
 		}
 
+		/// <summary>
+		/// Gets a list of suggestions for the specified (misspelled) word.
+		/// </summary>
+		/// <param name="word">The word</param>
+		/// <param name="maxCount">Max number of results</param>
+		/// <returns></returns>
 		public List<string> Suggest(string word, int maxCount)
 		{
 			if (this.unmanagedHandle == IntPtr.Zero)
