@@ -3,6 +3,7 @@
 #define _FILEMGR_HXX_
 
 #include "hunvisapi.h"
+
 #include "hunzip.hxx"
 #include <stdio.h>
 #include "../NHunspellExtensions.h"

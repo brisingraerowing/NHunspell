@@ -107,7 +107,10 @@ int SuggestMgr::testsug(char** wlst, const char * candidate, int wl, int ns, int
       int cwrd = 1;
       if (ns == maxSug) return maxSug;
       for (int k=0; k < ns; k++) {
-        if (strcmp(candidate,wlst[k]) == 0) cwrd = 0;
+        if (strcmp(candidate,wlst[k]) == 0) {
+            cwrd = 0;
+            break;
+        }
       }
       if ((cwrd) && checkword(candidate, wl, cpdsuggest, timer, timelimit)) {
         wlst[ns] = mystrdup(candidate);
@@ -330,10 +333,9 @@ int SuggestMgr::capchars_utf(char ** wlst, const w_char * word, int wl, int ns, 
 // suggestions for an uppercase word (html -> HTML)
 int SuggestMgr::capchars(char** wlst, const char * word, int ns, int cpdsuggest)
 {
-  char candidate[MAXSWUTF8L];
-  strcpy(candidate, word);
-  mkallcap(candidate, csconv);
-  return testsug(wlst, candidate, strlen(candidate), ns, cpdsuggest, NULL, NULL);
+    std::string candidate(word);
+    mkallcap(candidate, csconv);
+    return testsug(wlst, candidate.data(), candidate.size(), ns, cpdsuggest, NULL, NULL);
 }
 
 // suggestions for when chose the wrong char out of a related set
@@ -364,8 +366,12 @@ int SuggestMgr::map_related(const char * word, char * candidate, int wn, int cn,
       int cwrd = 1;
       *(candidate + cn) = '\0';
       int wl = strlen(candidate);
-      for (int m=0; m < ns; m++)
-          if (strcmp(candidate, wlst[m]) == 0) cwrd = 0;
+      for (int m=0; m < ns; m++) {
+          if (strcmp(candidate, wlst[m]) == 0) {
+              cwrd = 0;
+              break;
+          }
+      }
       if ((cwrd) && checkword(candidate, wl, cpdsuggest, timer, timelimit)) {
           if (ns < maxSug) {
               wlst[ns] = mystrdup(candidate);
@@ -761,8 +767,12 @@ int SuggestMgr::twowords(char ** wlst, const char * word, int ns, int cpdsuggest
                 ((c1 == 3) && (c2 >= 2)))) *p = '-';
 
             cwrd = 1;
-            for (int k=0; k < ns; k++)
-                if (strcmp(candidate,wlst[k]) == 0) cwrd = 0;
+            for (int k=0; k < ns; k++) {
+                if (strcmp(candidate,wlst[k]) == 0) {
+                    cwrd = 0;
+                    break;
+                }
+            }
             if (ns < maxSug) {
                 if (cwrd) {
                     wlst[ns] = mystrdup(candidate);
@@ -777,8 +787,12 @@ int SuggestMgr::twowords(char ** wlst, const char * word, int ns, int cpdsuggest
                 mystrlen(p + 1) > 1 &&
                 mystrlen(candidate) - mystrlen(p) > 1) {
                 *p = '-'; 
-                for (int k=0; k < ns; k++)
-                    if (strcmp(candidate,wlst[k]) == 0) cwrd = 0;
+                for (int k=0; k < ns; k++) {
+                    if (strcmp(candidate,wlst[k]) == 0) {
+                        cwrd = 0;
+                        break;
+                    }
+                }
                 if (ns < maxSug) {
                     if (cwrd) {
                         wlst[ns] = mystrdup(candidate);
@@ -1010,7 +1024,7 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, int ns, HashMgr** pHMgr, int md
 
   int i, j;
   int lval;
-  int sc, scphon;
+  int sc;
   int lp, lpphon;
   int nonbmp = 0;
 
@@ -1028,7 +1042,6 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, int ns, HashMgr** pHMgr, int md
   }
   lp = MAX_ROOTS - 1;
   lpphon = MAX_ROOTS - 1;
-  scphon = -20000;
   int low = NGRAM_LOWERING;
   
   char w2[MAXWORDUTF8LEN];
@@ -1097,7 +1110,7 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, int ns, HashMgr** pHMgr, int md
 	if (sc2 > sc) sc = sc2;
     }
     
-    scphon = -20000;
+    int scphon = -20000;
     if (ph && (sc > 2) && (abs(n - (int) hp->clen) <= 3)) {
       char target2[MAXSWUTF8L];
       if (utf8) {
@@ -1333,7 +1346,10 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, int ns, HashMgr** pHMgr, int md
           if ((!guessorig[i] && strstr(guess[i], wlst[j])) ||
 	     (guessorig[i] && strstr(guessorig[i], wlst[j])) ||
             // check forbidden words
-            !checkword(guess[i], strlen(guess[i]), 0, NULL, NULL)) unique = 0;
+            !checkword(guess[i], strlen(guess[i]), 0, NULL, NULL)) {
+            unique = 0;
+            break;
+          }
         }
         if (unique) {
     	    wlst[ns++] = guess[i];
@@ -1361,7 +1377,10 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, int ns, HashMgr** pHMgr, int md
           // don't suggest previous suggestions or a previous suggestion with prefixes or affixes
           if (strstr(rootsphon[i], wlst[j]) || 
             // check forbidden words
-            !checkword(rootsphon[i], strlen(rootsphon[i]), 0, NULL, NULL)) unique = 0;
+            !checkword(rootsphon[i], strlen(rootsphon[i]), 0, NULL, NULL)) {
+            unique = 0;
+            break;
+          }
         }
         if (unique) {
             wlst[ns++] = mystrdup(rootsphon[i]);

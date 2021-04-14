@@ -1,6 +1,7 @@
 #include "license.hunspell"
 #include "license.myspell"
 
+#include <algorithm>
 #include <stdlib.h> 
 #include <string.h>
 #include <stdio.h> 
@@ -9,6 +10,11 @@
 #include "csutil.hxx"
 #include "atypes.hxx"
 #include "langnum.hxx"
+
+#ifdef _WIN32
+#include <windows.h>
+#include <wchar.h>
+#endif
 
 #ifdef OPENOFFICEORG
 #  include <unicode/uchar.h>
@@ -21,13 +27,12 @@
 
 #ifdef MOZILLA_CLIENT
 #include "nsCOMPtr.h"
-#include "nsServiceManagerUtils.h"
 #include "nsIUnicodeEncoder.h"
 #include "nsIUnicodeDecoder.h"
 #include "nsUnicharUtils.h"
-#include "nsICharsetConverterManager.h"
+#include "mozilla/dom/EncodingUtils.h"
 
-static NS_DEFINE_CID(kCharsetConverterManagerCID, NS_ICHARSETCONVERTERMANAGER_CID);
+using mozilla::dom::EncodingUtils;
 #endif
 
 struct unicode_info2 {
@@ -38,6 +43,21 @@ struct unicode_info2 {
 
 static struct unicode_info2 * utf_tbl = NULL;
 static int utf_tbl_count = 0; // utf_tbl can be used by multiple Hunspell instances
+
+FILE * myfopen(const char * path, const char * mode) {
+#ifdef _WIN32
+#define WIN32_LONG_PATH_PREFIX "\\\\?\\"
+    if (strncmp(path, WIN32_LONG_PATH_PREFIX, 4) == 0) {
+        int len = MultiByteToWideChar(CP_UTF8, 0, path, -1, NULL, 0);
+        wchar_t *buff = (wchar_t *) malloc(len * sizeof(wchar_t));
+        MultiByteToWideChar(CP_UTF8, 0, path, -1, buff, len);
+        FILE * f = _wfopen(buff, (strcmp(mode, "r") == 0) ? L"r" : L"rb");
+        free(buff);
+        return f;
+    }
+#endif
+    return fopen(path, mode);
+}
 
 /* only UTF-16 (BMP) implementation */
 char * u16_u8(char * dest, int size, const w_char * src, int srclen) {
@@ -322,7 +342,10 @@ int line_tok(const char * text, char *** lines, char breakchar) {
         p += strlen(p) + 1;
     }
     free(dup);
-    if (!l) free(*lines);
+    if (!l) {
+        free(*lines);
+        *lines = NULL;
+    }
     return l;
 }
 
@@ -335,7 +358,10 @@ char * line_uniq(char * text, char breakchar) {
     for ( i = 1; i < linenum; i++ ) {
         int dup = 0;
         for (int j = 0; j < i; j++) {
-            if (strcmp(lines[i], lines[j]) == 0) dup = 1;
+            if (strcmp(lines[i], lines[j]) == 0) {
+              dup = 1;
+              break;
+            }
         }
         if (!dup) {
             if ((i > 1) || (*(lines[0]) != '\0')) {
@@ -345,9 +371,9 @@ char * line_uniq(char * text, char breakchar) {
         }
     }
     for ( i = 0; i < linenum; i++ ) {
-        if (lines[i]) free(lines[i]);
+        free(lines[i]);
     }
-    if (lines) free(lines);
+    free(lines);
     return text;
 }
 
@@ -539,6 +565,17 @@ char * copy_field(char * dest, const char * morph, const char * var)
   return NULL;
 }
 
+std::string& mystrrep(std::string& str, const std::string& search, const std::string& replace)
+{
+    size_t pos = 0;
+    while ((pos = str.find(search, pos)) != std::string::npos)
+    {
+       str.replace(pos, search.length(), replace);
+       pos += replace.length();
+    }
+    return str;
+}
+
 char * mystrrep(char * word, const char * pat, const char * rep) {
     char * pos = strstr(word, pat);
     if (pos) {
@@ -574,6 +611,13 @@ char * mystrrep(char * word, const char * pat, const char * rep) {
    }
    return 0;
  }
+
+// reverse word 
+std::string &reverseword(std::string& word)
+{
+    std::reverse(word.begin(), word.end());
+    return word;
+}
 
  // reverse word (error: 1)
  int reverseword_utf(char * word) {
@@ -613,8 +657,8 @@ char * mystrrep(char * word, const char * pat, const char * rep) {
  }
  
  void freelist(char *** list, int n) {
-   if (list && *list && n > 0) {
-     for (int i = 0; i < n; i++) if ((*list)[i]) free((*list)[i]);
+   if (list && *list) {
+     for (int i = 0; i < n; i++) free((*list)[i]);
      free(*list);
      *list = NULL;
    }
@@ -628,6 +672,16 @@ char * mystrrep(char * word, const char * pat, const char * rep) {
      p++;
    }
  }
+
+// convert std::string to all caps
+std::string& mkallcap(std::string &s, const struct cs_info * csconv)
+{
+    for (std::string::iterator aI = s.begin(), aEnd = s.end(); aI != aEnd; ++aI)
+    {
+        *aI = csconv[((unsigned char)*aI)].cupper;
+    }
+    return s;
+}
   
  // convert null terminated string to all little
  void mkallsmall(char * p, const struct cs_info * csconv)
@@ -5475,24 +5529,19 @@ struct cs_info * get_current_cs(const char * es) {
   nsCOMPtr<nsIUnicodeDecoder> decoder; 
 
   nsresult rv;
-  nsCOMPtr<nsICharsetConverterManager> ccm = do_GetService(kCharsetConverterManagerCID, &rv);
-  if (NS_FAILED(rv))
-    return ccs;
 
-  rv = ccm->GetUnicodeEncoder(es, getter_AddRefs(encoder));
-  if (NS_FAILED(rv))
+  nsAutoCString label(es);
+  nsAutoCString encoding;
+  if (!EncodingUtils::FindEncodingForLabelNoReplacement(label, encoding)) {
     return ccs;
-  encoder->SetOutputErrorBehavior(encoder->kOnError_Signal, nsnull, '?');
-  rv = ccm->GetUnicodeDecoder(es, getter_AddRefs(decoder));
-  if (NS_FAILED(rv))
-    return ccs;
+  }
+  encoder = EncodingUtils::EncoderForEncoding(encoding);
+  decoder = EncodingUtils::DecoderForEncoding(encoding);
+  encoder->SetOutputErrorBehavior(encoder->kOnError_Signal, nullptr, '?');
   decoder->SetInputErrorBehavior(decoder->kOnError_Signal);
 
-  if (NS_FAILED(rv))
-    return ccs;
-
   for (unsigned int i = 0; i <= 0xff; ++i) {
-    PRBool success = PR_FALSE;
+    bool success = false;
     // We want to find the upper/lowercase equivalents of each byte
     // in this 1-byte character encoding.  Call our encoding/decoding
     // APIs separately for each byte since they may reject some of the
@@ -5502,8 +5551,8 @@ struct cs_info * get_current_cs(const char * es) {
       if (i == 0)
         break;
       const char source = char(i);
-      PRUnichar uni, uniCased;
-      PRInt32 charLength = 1, uniLength = 1;
+      char16_t uni, uniCased;
+      int32_t charLength = 1, uniLength = 1;
 
       rv = decoder->Convert(&source, &charLength, &uni, &uniLength);
       // Explicitly check NS_OK because we don't want to allow
@@ -5524,7 +5573,7 @@ struct cs_info * get_current_cs(const char * es) {
       if (rv != NS_OK || charLength != 1 || uniLength != 1)
         break;
 
-      success = PR_TRUE;
+      success = true;
     } while (0);
 
     if (success) {
@@ -5655,7 +5704,7 @@ unsigned short unicodetoupper(unsigned short c, int langnum)
   return static_cast<unsigned short>(u_toupper(c));
 #else
 #ifdef MOZILLA_CLIENT
-  return ToUpperCase((PRUnichar) c);
+  return ToUpperCase((char16_t) c);
 #else
   return (utf_tbl) ? utf_tbl[c].cupper : c;
 #endif
@@ -5673,7 +5722,7 @@ unsigned short unicodetolower(unsigned short c, int langnum)
   return static_cast<unsigned short>(u_tolower(c));
 #else
 #ifdef MOZILLA_CLIENT
-  return ToLowerCase((PRUnichar) c);
+  return ToLowerCase((char16_t) c);
 #else
   return (utf_tbl) ? utf_tbl[c].clower : c;
 #endif

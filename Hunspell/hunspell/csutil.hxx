@@ -5,9 +5,18 @@
 
 // First some base level utility routines
 
+#include <string>
 #include <string.h>
 #include "w_char.hxx"
 #include "htypes.hxx"
+
+// Unicode character encoding information
+struct unicode_info {
+	unsigned short c;
+	unsigned short cupper;
+	unsigned short clower;
+};
+
 
 #ifdef MOZILLA_CLIENT
 #include "nscore.h" // for mozalloc headers
@@ -52,6 +61,9 @@
 #define FORBIDDENWORD  65510
 #define ONLYUPCASEFLAG 65511
 
+// fopen or optional _wfopen to fix long pathname problem of WIN32
+LIBHUNSPELL_DLL_EXPORTED FILE * myfopen(const char * path, const char * mode);
+
 // convert UTF-16 characters to UTF-8
 LIBHUNSPELL_DLL_EXPORTED char * u16_u8(char * dest, int size, const w_char * src, int srclen);
 
@@ -81,8 +93,9 @@ LIBHUNSPELL_DLL_EXPORTED char * mystrsep(char ** sptr, const char delim);
 // parse into tokens with char delimiter
 LIBHUNSPELL_DLL_EXPORTED char * mystrsep2(char ** sptr, const char delim);
 
-// parse into tokens with char delimiter
-LIBHUNSPELL_DLL_EXPORTED char * mystrrep(char *, const char *, const char *);
+// replace pat by rep in word and return word
+LIBHUNSPELL_DLL_EXPORTED char * mystrrep(char * word, const char *pat, const char *rep);
+LIBHUNSPELL_DLL_EXPORTED std::string& mystrrep(std::string& str, const std::string& search, const std::string& replace);
 
 // append s to ends of every lines in text
 LIBHUNSPELL_DLL_EXPORTED void strlinecat(char * lines, const char * s);
@@ -99,6 +112,8 @@ LIBHUNSPELL_DLL_EXPORTED char * tr(char * text, char oldc, char newc);
 
 // reverse word
 LIBHUNSPELL_DLL_EXPORTED int reverseword(char *);
+// reverse word
+LIBHUNSPELL_DLL_EXPORTED std::string& reverseword(std::string& word);
 
 // reverse word
 LIBHUNSPELL_DLL_EXPORTED int reverseword_utf(char *);
@@ -115,14 +130,6 @@ struct cs_info {
   unsigned char clower;
   unsigned char cupper;
 };
-
-// Unicode character encoding information
-struct unicode_info {
-  unsigned short c;
-  unsigned short cupper;
-  unsigned short clower;
-};
-
 
 LIBHUNSPELL_DLL_EXPORTED int initialize_utf_tbl();
 LIBHUNSPELL_DLL_EXPORTED void free_utf_tbl();
@@ -149,6 +156,8 @@ LIBHUNSPELL_DLL_EXPORTED void enmkinitcap(char * d, const char * p, const char *
 
 // convert null terminated string to all caps
 LIBHUNSPELL_DLL_EXPORTED void mkallcap(char * p, const struct cs_info * csconv);
+// convert std::string to all caps
+LIBHUNSPELL_DLL_EXPORTED std::string& mkallcap(std::string &s, const struct cs_info * csconv);
 
 // convert null terminated string to all little
 LIBHUNSPELL_DLL_EXPORTED void mkallsmall(char * p, const struct cs_info * csconv);

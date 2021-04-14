@@ -39,11 +39,12 @@
 #include <stdlib.h> /* for NULL, malloc */
 #include <stdio.h>  /* for fprintf */
 #include <string.h> /* for strdup */
-#include "../NHunspellExtensions.h"
 
 #ifdef UNX
 #include <unistd.h> /* for exit */
 #endif
+
+#include "../NHunspellExtensions.h"
 
 #define noVERBOSE
 
@@ -361,7 +362,7 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
           }
 
 	  /* now, put in the prefix transitions */
-          for (; found < 0 ;j--)
+          for (; found < 0 && j > 0; --j)
 	    {
 	      last_state = state_num;
 	      ch = word[j - 1];
@@ -562,7 +563,7 @@ int hnj_hyphen_hyphenate (HyphenDict *dict,
   char *match;
   int offset;
 
-  prep_word = (char *) hnj_malloc (word_size + 3);
+  prep_word = (char*) hnj_malloc (word_size + 3);
 
   j = 0;
   prep_word[j++] = '.';
@@ -789,10 +790,10 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
   int nHyphCount;
 
   size_t prep_word_size = word_size + 3;
-  prep_word = (char *) hnj_malloc (prep_word_size);
-  matchlen = (int *) hnj_malloc ((word_size + 3) * sizeof(int));
-  matchindex = (int *) hnj_malloc ((word_size + 3) * sizeof(int));
-  matchrepl = (char **) hnj_malloc ((word_size + 3) * sizeof(char *));
+  prep_word = (char*) hnj_malloc (prep_word_size);
+  matchlen = (int*) hnj_malloc ((word_size + 3) * sizeof(int));
+  matchindex = (int*) hnj_malloc ((word_size + 3) * sizeof(int));
+  matchrepl = (char**) hnj_malloc ((word_size + 3) * sizeof(char *));
 
   j = 0;
   prep_word[j++] = '.';
@@ -957,10 +958,10 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
      char * hyphens2;
      int begin = 0;
 
-     rep2 = (char **) hnj_malloc (word_size * sizeof(char *));
-     pos2 = (int *) hnj_malloc (word_size * sizeof(int));
-     cut2 = (int *) hnj_malloc (word_size * sizeof(int));
-     hyphens2 = (char *) hnj_malloc (word_size + 3);
+     rep2 = (char**) hnj_malloc (word_size * sizeof(char *));
+     pos2 = (int*) hnj_malloc (word_size * sizeof(int));
+     cut2 = (int*) hnj_malloc (word_size * sizeof(int));
+     hyphens2 = (char*) hnj_malloc (word_size + 3);
      for (i = 0; i < word_size; i++) rep2[i] = NULL;
      for (i = 0; i < word_size; i++) if 
         (hyphens[i]&1 || (begin > 0 && i + 1 == word_size)) {

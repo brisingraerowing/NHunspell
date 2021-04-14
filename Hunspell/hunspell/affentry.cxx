@@ -137,11 +137,11 @@ inline int PfxEntry::test_condition(const char * st)
                         }
                         if (pos && st != pos) {
                             ingroup = true;
-                            while (p && *p != ']' && ((p = nextchar(p)) != NULL));
+                            while (p && *p != ']' && ((p = nextchar(p)) != NULL)) {}
                         }
                     } else if (pos) {
                         ingroup = true;
-                        while (p && *p != ']' && ((p = nextchar(p)) != NULL));
+                        while (p && *p != ']' && ((p = nextchar(p)) != NULL)) {}
                     }
                 } else if (pos) { // group
                     p = nextchar(p);
@@ -568,7 +568,7 @@ inline int SfxEntry::test_condition(const char * st, const char * beg)
                             if (neg) return 0;
                             else if (i == numconds) return 1;
                             ingroup = true;
-                            while (p && *p != ']' && ((p = nextchar(p)) != NULL));
+                            while (p && *p != ']' && ((p = nextchar(p)) != NULL)) {}
 			    st--;
                         }
                         if (p && *p != ']') p = nextchar(p);
@@ -576,7 +576,7 @@ inline int SfxEntry::test_condition(const char * st, const char * beg)
                         if (neg) return 0;
                         else if (i == numconds) return 1;
                         ingroup = true;
-			while (p && *p != ']' && ((p = nextchar(p)) != NULL));
+			while (p && *p != ']' && ((p = nextchar(p)) != NULL)) {}
 //			if (p && *p != ']') p = nextchar(p);
                         st--;
                     }
@@ -681,7 +681,10 @@ struct hentry * SfxEntry::checkword(const char * word, int len, int optflags,
                 } else if (wlst && (*ns < maxSug)) {
                     int cwrd = 1;
                     for (int k=0; k < *ns; k++)
-                        if (strcmp(tmpword, wlst[k]) == 0) cwrd = 0;
+                        if (strcmp(tmpword, wlst[k]) == 0) {
+                           cwrd = 0;
+                           break;
+                        }
                     if (cwrd) {
                         wlst[*ns] = mystrdup(tmpword);
                         if (wlst[*ns] == NULL) {
