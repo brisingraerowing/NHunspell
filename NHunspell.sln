@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{50E331DB-7D25-440A-9086-86EBDE0F2D66}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,12 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{CE80DE60-3210-4D1B-9C62-7C7F91DA3621}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHunspell", "NHunspell\NHunspell.csproj", "{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}"
-EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "NHunspell-Documentation", "Documentation\NHunspell-Documentation.shfbproj", "{F19BE8F6-BA5E-433A-9CAA-968A36FA8ECB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C} = {57A9FC0D-F08A-4B26-B8C4-D770B529E00C}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHunspell", "NHunspell\NHunspell.csproj", "{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,15 +33,13 @@ Global
 		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57A9FC0D-F08A-4B26-B8C4-D770B529E00C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F19BE8F6-BA5E-433A-9CAA-968A36FA8ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F19BE8F6-BA5E-433A-9CAA-968A36FA8ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F19BE8F6-BA5E-433A-9CAA-968A36FA8ECB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		AMDCaProjectFile = D:\CheckOutLibraries\NHunspell\CodeAnalyst\NHunspell.caw
+		SolutionGuid = {27C0E24F-2446-45BA-B007-7A53484D0F40}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

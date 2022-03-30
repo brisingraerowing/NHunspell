@@ -202,7 +202,7 @@ int main(int argc, const char* argv[]) {
       pat[j]=0;
       pattab_key[patterns]   = pat;
       pattab_val[patterns++] = org;
-      if (patterns>MAXPATHS) die("to many base patterns");
+      if (patterns>=MAXPATHS) die("to many base patterns");
     }
   }
   fclose(in);
@@ -221,12 +221,12 @@ int main(int argc, const char* argv[]) {
         strncpy(subpat,pat+i,j); subpat[j]=0;
         if ((subpat_ndx = find_in(pattab_key,patterns,subpat))>=0) {
           int   newpat_ndx;
-          char *newpat=(char *) malloc(l+1);
+          char *newpat=(char*)malloc(l+1);
           if (newpat==NULL) die("not enough memory");
       //printf("%s is embedded in %s\n",pattab_val[subpat_ndx],pattab_val[p]);
           strncpy(newpat, pat+0,l); newpat[l]=0;
           if ((newpat_ndx = find_in(newpattab_key,newpatterns,newpat))<0) {
-            char *neworg = (char *) malloc(132); // TODO: compute exact length
+            char *neworg = (char*)malloc(132); // TODO: compute exact length
             if (neworg==NULL) die("not enough memory");
             expand(neworg,newpat,l);
             newpattab_key[newpatterns]   = newpat;

@@ -58,7 +58,7 @@ int  DictMgr::parse_file(const char * dictpath, const char * etype)
 
     // open the dictionary list file
     FILE * dictlst;
-    dictlst = myfopen(dictpath,"r");
+    dictlst = fopen(dictpath,"r");
     if (!dictlst) {
       return 1;
     }
